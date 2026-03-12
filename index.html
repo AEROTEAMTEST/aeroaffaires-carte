@@ -509,8 +509,17 @@ async function loadData() {
       lng:   cols.findIndex(c => c.toLowerCase() === 'lng'),
     };
 
-    const getVal = (row, i) => i >= 0 && row.c[i] ? (row.c[i].v || row.c[i].f || '').toString().trim() : '';
-    const parseCoord = (val) => parseFloat(val.toString().replace(',', '.'));
+    const getVal = (row, i) => {
+      if (i < 0 || !row.c || !row.c[i]) return '';
+      const cell = row.c[i];
+      const v = (cell.v !== null && cell.v !== undefined) ? cell.v : (cell.f || '');
+      return v.toString().trim();
+    };
+    const parseCoord = (val) => {
+      if (!val || val === '') return NaN;
+      if (typeof val === 'string' && val.includes('/')) return NaN;
+      return parseFloat(val.toString().replace(',', '.'));
+    };
 
     operators = rows
       .filter(r => r.c && r.c[idx.nom] && r.c[idx.nom].v)
@@ -643,6 +652,7 @@ function addMarker(o) {
     <div class="popup-inner">
       <div class="popup-name">${o.nom}</div>
       <div class="popup-loc">📍 ${o.base || '—'} · ${o.natio || ''}</div>
+      ${o.tel ? `<div class="popup-fleet">📞 ${o.tel}</div>` : ''}
       ${o.email ? `<div class="popup-fleet">✉ ${o.email}</div>` : ''}
       <button class="popup-btn" onclick="selectGroup('${o.nom.replace(/'/g,"\\'")}')">Voir la fiche →</button>
     </div>
