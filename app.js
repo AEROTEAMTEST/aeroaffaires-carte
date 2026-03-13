@@ -54,6 +54,7 @@ window.addEventListener('load', () => {
 
 // ── LOAD DATA FROM GOOGLE SHEETS ─────────────────────────────────────────────
 async function loadData() {
+  const loadStart = Date.now();
   const btn = document.getElementById('btn-refresh');
   btn.classList.add('loading');
   btn.textContent = '↻ Chargement…';
@@ -145,7 +146,9 @@ async function loadData() {
     renderMarkers();
     updateCounters();
 
-    document.getElementById('loader').classList.add('hidden');
+    const elapsed = Date.now() - loadStart;
+    const delay = Math.max(0, 3000 - elapsed);
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), delay);
     showToast(`✓ ${operators.length} bases chargées depuis Google Sheets`);
 
   } catch(e) {

@@ -14,12 +14,31 @@
 
 <!-- LOADER -->
 <div id="loader">
+  <img src="hup.webp" alt="HUP" style="
+    height:220px;width:auto;
+    filter:drop-shadow(0 0 8px white) drop-shadow(0 0 22px white) drop-shadow(0 0 45px rgba(255,255,255,0.5));
+    animation:floatIn 0.8s ease-out forwards;
+    margin-bottom:10px;
+  ">
+  <div style="
+    font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:5px;
+    color:white;
+    text-shadow:0 0 8px white,0 0 20px white,0 0 40px rgba(255,255,255,0.5);
+    margin-bottom:22px;
+    animation:floatIn 1s ease-out forwards;
+  ">CLAUDE × HUP</div>
   <div class="loader-logo">
-    <img src="LOGOS-AA_HORIZON.svg" alt="AEROAFFAIRES" style="height:60px;width:auto;">
+    <img src="LOGOS-AA_HORIZON.svg" alt="AEROAFFAIRES" style="height:48px;width:auto;opacity:0.85;">
   </div>
-  <div class="loader-bar-bg"><div class="loader-bar"></div></div>
+  <div class="loader-bar-bg" style="margin-top:16px"><div class="loader-bar" style="animation-duration:3s"></div></div>
   <div class="loader-text" id="loader-text">Chargement des opérateurs…</div>
 </div>
+<style>
+@keyframes floatIn {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
 
 <!-- HEADER -->
 <header>

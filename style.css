@@ -330,7 +330,7 @@ header {
   height: 100%;
   background: linear-gradient(90deg, var(--gold2), var(--gold));
   border-radius: 2px;
-  animation: load 1.5s ease-in-out forwards;
+  animation: load 3s ease-in-out forwards;
 }
 
 @keyframes load {
