@@ -162,6 +162,8 @@ async function loadData() {
 }
 
 // ── FILTERS ──────────────────────────────────────────────────────────────────
+let currentModele = 'all';
+
 function buildFilters() {
   const pays = [...new Set(operators.map(o => o.natio).filter(Boolean))].sort();
   const wrap = document.getElementById('filter-btns');
@@ -174,6 +176,25 @@ function buildFilters() {
     b.onclick = () => setFilter(p, b);
     wrap.appendChild(b);
   });
+
+  // Construire la liste des modèles uniques depuis les flottes
+  const modeles = [...new Set(
+    operators
+      .map(o => o.flotte).filter(Boolean)
+      .flatMap(f => f.split('|').map(a => a.trim().split(/\s+/)[0]))
+      .filter(Boolean)
+  )].sort();
+
+  const sel = document.getElementById('filter-modele');
+  if (!sel) return;
+  sel.innerHTML = `<option value="all">🚁 Tous les modèles</option>`;
+  modeles.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m;
+    sel.appendChild(opt);
+  });
+  sel.onchange = () => { currentModele = sel.value; renderSidebar(); renderMarkers(); };
 }
 
 function setFilter(f, btn) {
@@ -189,7 +210,10 @@ function getFiltered() {
   return operators.filter(o => {
     const matchF = currentFilter === 'all' || o.natio === currentFilter;
     const matchQ = !q || [o.nom, o.base, o.natio, o.email].some(v => v && v.toLowerCase().includes(q));
-    return matchF && matchQ;
+    const matchM = currentModele === 'all' || (
+      o.flotte && o.flotte.split('|').some(a => a.trim().split(/\s+/)[0] === currentModele)
+    );
+    return matchF && matchQ && matchM;
   });
 }
 
